@@ -1,5 +1,5 @@
 // Configuración base para las llamadas API
-const API_BASE_URL = 'http://localhost:5001';
+const API_BASE_URL = '';
 
 // Función para autenticar y obtener JWT
 async function autenticarUsuario(username, password) {
