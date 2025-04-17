@@ -33,16 +33,10 @@ const autenticarJWT = (req, res, next) => {
 
 app.post('/api/login', (req, res) => {
   const { username, password } = req.body;
-  db.get('SELECT * FROM usuarios WHERE username = ?', [username], (err, user) => {
-    if (err) return res.status(500).json({ error: 'database_error' });
-    if (!user) {
-      return res.status(401).json({ error: 'credenciales_invalidas', mensaje: 'Usuario no encontrado' });
-    }
-    if (!bcrypt.compareSync(password, user.password)) {
-      return res.status(401).json({ error: 'credenciales_invalidas', mensaje: 'Contraseña incorrecta' });
-    }
+  // Usuario de prueba hardcodeado para entorno Vercel
+  if (username === 'admin' && password === 'admin123') {
     const token = jwt.sign(
-      { id: user.id, username: user.username, rol: user.rol },
+      { id: 1, username: 'admin', rol: 'admin' },
       JWT_SECRET,
       { expiresIn: '1h' }
     );
@@ -52,12 +46,14 @@ app.post('/api/login', (req, res) => {
       sameSite: 'Lax',
       maxAge: 3600000
     });
-    res.json({ 
+    return res.json({ 
       message: 'Login exitoso', 
       access_token: token,
-      user: { id: user.id, username: user.username, rol: user.rol }
+      user: { id: 1, username: 'admin', rol: 'admin' }
     });
-  });
+  }
+  // Si no coincide, rechaza
+  return res.status(401).json({ error: 'credenciales_invalidas', mensaje: 'Usuario o contraseña incorrectos' });
 });
 
 app.get('/api/protected', autenticarJWT, (req, res) => {
