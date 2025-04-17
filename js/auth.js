@@ -1,5 +1,5 @@
 // Configuración base para las llamadas API
-const API_BASE_URL = '';
+const API_BASE_URL = 'https://lavetedejavi.vercel.app';
 
 // Función para autenticar y obtener JWT
 async function autenticarUsuario(username, password) {
