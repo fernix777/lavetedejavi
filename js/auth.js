@@ -16,7 +16,8 @@ async function autenticarUsuario(username, password) {
         
         if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.error === 'credenciales_invalidas' ? 'Usuario o contraseña incorrectos' : 'Error de autenticación');
+            console.error('Respuesta del backend:', errorData); // <-- Depuración
+            throw new Error(errorData.error === 'credenciales_invalidas' ? 'Usuario o contraseña incorrectos' : 'Error de autenticación: ' + (errorData.mensaje || JSON.stringify(errorData)));
         }
         
         const { access_token } = await response.json();
